@@ -5,7 +5,7 @@ from flask import Flask, render_template, Response
 app = Flask(__name__)
 
 video = cv2.VideoCapture(0)
-sticker = cv2.imread('./spider_man.png', cv2.IMREAD_UNCHANGED)
+sticker = cv2.imread('./static/filter/spider_man.png', cv2.IMREAD_UNCHANGED)
 
 detector = dlib.get_frontal_face_detector()
 
