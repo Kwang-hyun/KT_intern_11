@@ -4,8 +4,8 @@ from flask import Flask, render_template, Response
 
 app = Flask(__name__)
 
-video = cv2.VideoCapture(0)
-sticker = cv2.imread('./static/filter/spider_man.png', cv2.IMREAD_UNCHANGED)
+camera = cv2.VideoCapture(0)
+sticker = cv2.imread('./static/filter/ryan_transparent.png', cv2.IMREAD_UNCHANGED)
 
 detector = dlib.get_frontal_face_detector()
 
@@ -36,32 +36,24 @@ def putSticker(img):
 
 def captureFrames():
     while True:
-        ret, img = video.read()
-        if ret == False:
+        success, frame = camera.read()
+        frame = cv2.flip(frame, 1)
+        if not success:
             break
-        img = cv2.flip(img, 1)
-        putSticker(img)
-        cv2.imshow("result", img)
-
-        if cv2.waitKey(1) == ord('q'):
-            break
-
-        # Flask로 이미지 보내기 위한 전처리
-        buffer = cv2.imencode('.jpg', img)
-        frame = buffer.tobytes()
-
-        yield (b'—frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
+        else:
+            putSticker(frame)
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/video')
 def video():
     return Response(captureFrames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 if __name__=="__main__":
     app.run(debug=True)
