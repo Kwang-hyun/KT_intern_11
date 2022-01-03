@@ -4,7 +4,9 @@
     <title>체인지 U의 웹사이트</title>
     <meta charset="utf-8" />
     <!-- Import the webpage's stylesheet -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}" />
+    <!-- Import the page's JavaScript to do some stuff -->
+    <script defer src="{{ url_for('static', filename='js/script.js')}}"></script>
   </head>
   <body>
     <center><h1>Change U</h1></center>
@@ -31,7 +33,6 @@
     <!-- Load the coco-ssd model to use to recognize things in images -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
 
-    <!-- Import the page's JavaScript to do some stuff -->
-    <script src="script.js" defer></script>
+
   </body>
 </html>
