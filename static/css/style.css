@@ -1,18 +1,28 @@
-html{
-    background: url("../img/background-img.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+html, body{
+    height:100%;
+    margin: 0;
 }
 
 body {
-    font-family: helvetica, arial, sans-serif;
-    margin: 2em;
-    color: #3D3D3D;
-    background-color: bisque;
-  }
-  
+    background-image: url("../img/background-img.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+#webcam{
+    width: 40%;
+    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 55%;
+  left: 50%;
+}
+
+table {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 20%;
+    margin-bottom: 20%;
+}
+
   h1 {
     font-style: italic;
     color: #FF6F00;

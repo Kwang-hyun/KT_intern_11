@@ -5,6 +5,20 @@ const enableWebcamButton = document.getElementById("webcamButton");
 let click_button = document.querySelector("#click-photo");
 let save_button = document.querySelector("#save-photo");
 let canvas = document.querySelector("#canvas");
+let title;
+let flag = true;
+
+window.onload = function(){
+    document.onclick = function(){
+        saveCanvas();
+        showPopup();
+    }
+};
+
+function showPopup() {
+    var newWindow = window.open("./email.html"+"?title="+title, "photo", "width=400, height=300, left=100, top=50");
+//    location.href = "../../templates/email.html"+"?title="+title;
+}
 
 ////////////////////////////////////////////////////// WebCam
 // Check if webcam access is supported.
@@ -56,10 +70,51 @@ cocoSsd.load().then(function (loadedModel) {
 });
 
 ////////////////////////////////////////////////////// Image Save
-save_button.addEventListener("click", function () {
-  canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-  canvasImageSave();
-});
+//save_button.addEventListener("click", function () {
+//  canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+//  canvasImageSave();
+//});
+
+function saveCanvas(){
+
+    if(!flag) return;
+    else{
+        flag = false;
+    }
+
+    console.log("");
+    console.log("[canvasImageSave] : [start]");
+    console.log("");
+
+    canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+    // 캔버스 아이디 지정 실시
+    var canvasID = document.getElementById("canvas");
+
+    // a 태그 생성 실시
+    var a = document.createElement("a"); // a 태그 create
+
+    // a 태그 href 속성에 캔버스 data url 지정
+    a.href = canvasID.toDataURL();
+
+    // a 태그에 download 속성 지정 실시
+    //var fileName = "chartImage.png";
+    var fileName = "ChangeU+" + getTime() + ".png";
+    title = fileName;
+
+   // a 태그에 다운로드 속성 추가
+    a.setAttribute("download", fileName);
+    // body 영역에 a 태그 추가 실시
+    document.body.appendChild(a);
+
+    // a 태그 강제로 클릭 이벤트 발생 및 다운 로드 수행 실시
+    a.click(); // 클릭 이벤트를 발생시켜 다운로드
+
+    // body 영역에서 a 태그 다시 삭제 실시
+    document.body.removeChild(a);
+
+    flag=true;
+}
+
 
 function getTime() {
   var today = new Date();
@@ -76,33 +131,34 @@ function getTime() {
   return dateString + "-" + timeString;
 }
 
-function canvasImageSave() {
-  console.log("");
-  console.log("[canvasImageSave] : [start]");
-  console.log("");
+//function canvasImageSave() {
+//  console.log("");
+//  console.log("[canvasImageSave] : [start]");
+//  console.log("");
+//
+//  // 캔버스 아이디 지정 실시
+//  var canvasID = document.getElementById("canvas");
+//
+//  // a 태그 생성 실시
+//  var a = document.createElement("a"); // a 태그 create
+//
+//  // a 태그 href 속성에 캔버스 data url 지정
+//  a.href = canvasID.toDataURL();
+//
+//  // a 태그에 download 속성 지정 실시
+//  //var fileName = "chartImage.png";
+//  var fileName = "ChangeU+" + getTime() + ".png";
+//  a.setAttribute("download", fileName); // a 태그에 다운로드 속성 추가
+//  // body 영역에 a 태그 추가 실시
+//  document.body.appendChild(a);
+//
+//  // a 태그 강제로 클릭 이벤트 발생 및 다운 로드 수행 실시
+//  a.click(); // 클릭 이벤트를 발생시켜 다운로드
+//
+//  // body 영역에서 a 태그 다시 삭제 실시
+//  document.body.removeChild(a);
+//}
 
-  // 캔버스 아이디 지정 실시
-  var canvasID = document.getElementById("canvas");
-
-  // a 태그 생성 실시
-  var a = document.createElement("a"); // a 태그 create
-
-  // a 태그 href 속성에 캔버스 data url 지정
-  a.href = canvasID.toDataURL();
-
-  // a 태그에 download 속성 지정 실시
-  //var fileName = "chartImage.png";
-  var fileName = "ChangeU+" + getTime() + ".png";
-  a.setAttribute("download", fileName); // a 태그에 다운로드 속성 추가
-  // body 영역에 a 태그 추가 실시
-  document.body.appendChild(a);
-
-  // a 태그 강제로 클릭 이벤트 발생 및 다운 로드 수행 실시
-  a.click(); // 클릭 이벤트를 발생시켜 다운로드
-
-  // body 영역에서 a 태그 다시 삭제 실시
-  document.body.removeChild(a);
-}
 
 ////////////////////////////////////////////////////// prediction
 var children = [];
@@ -161,9 +217,11 @@ function predictWebcam() {
     // Call this function again to keep predicting when the browser is ready.
     window.requestAnimationFrame(predictWebcam);
 
-    // audio1();
   });
 }
+
+
+////////////////////////////////////////////////////// audio
 
 // function audio1() {
 //   var audio1 = new Audio("1번노래.mp3");
@@ -171,6 +229,7 @@ function predictWebcam() {
 //   audio1.volume = 0.2; // 음량 설정
 //   audio1.play();
 // }
+
 function aud_play() {
   var audio = document.getElementById("audio");
 
@@ -185,7 +244,7 @@ function aud_play() {
 
   if (audio.paused) {
     next_order();
-    var url = String(idx) + ".mp3";
+    var url = "../static/sounds/" + String(idx) + ".mp3";
     console.log(url);
 
     audio.setAttribute("src", url);

@@ -5,25 +5,23 @@
     <meta charset="utf-8" />
     <!-- Import the webpage's stylesheet -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- Import the page's JavaScript to do some stuff -->
     <script defer src="{{ url_for('static', filename='js/script.js')}}"></script>
   </head>
   <body>
-    <center><h1>Change U</h1></center>
-
-    <center><p>11조 조원 누구누구</p></center>
-    <img src="{{ url_for('video') }}" width="50%"/>
+  <div class="bg">
+<img id ="webcam" src="{{ url_for('video') }}"/>
 <!--    <section id="demos" class="invisible">-->
 <!--      &lt;!&ndash;<p>Hold some objects up close to your webcam to get a real-time classification! When ready click "enable webcam" below and accept access to the webcam when the browser asks (check the top left of your window)</p>&ndash;&gt;-->
 
 <!--      <div id="liveView" class="camView">-->
 <!--        <video id="webcam" autoplay="true" width="640" height="480"></video>-->
 <!--      </div>-->
-
-<!--      <button id="save-photo">저장하기</button>-->
-<!--      <canvas id="canvas" width="320" height="240"></canvas>-->
 <!--    </section>-->
     <audio src="" id="audio" type="audio/mp3"></audio>
+
+    <canvas hidden id="canvas" width="320" height="240"></canvas>
 
     <!-- Import TensorFlow.js library -->
     <script
@@ -32,7 +30,6 @@
     ></script>
     <!-- Load the coco-ssd model to use to recognize things in images -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
-
-
+</div>
   </body>
 </html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script type="text/javascript">
+
+        let path = "ChangeU+20220104-095630";
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('title');
+
+        window.onload = function(){
+            let image = document.getElementById("img");
+            image.src = "/Users/bbnsa/Downloads/" + myParams;
+        }
+    </script>
+
+    <img id="img" src="" width="90%"/>
+</body>
+</html>
