@@ -57,9 +57,12 @@ function sendData(){
         console.log("end of the sendData()");
 }
 
+
+
 function showPopup() {
-//    console.log("front of the showPopup()");
+    console.log("front of the showPopup()");
 //    var newWindow = window.open("age.html", "Age", "width=400, height=300, left=100, top=50");
+    location.href = "age.html";
 }
 
 ////////////////////////////////////////////////////// WebCam
@@ -237,33 +240,18 @@ function predictWebcam() {
 
 ////////////////////////////////////////////////////// audio
 
-function aud_play() {
-  var audio = document.getElementById("audio");
+//function aud_play() {
+//
+//    var audioURL = {{ audio|tojson }};
+//    console.log(audioURL);
+//    var audio = document.getElementById("audio");
+//    var url = "../static/filter/"+audioURL;
+//    console.log(url);
+//
+//    audio.setAttribute("src", url);
+//    console.log("changed:" + audio.getAttribute("src"));
+//
+//    audio.load();
+//    audio.play();
+//}
 
-  // running
-  if (!audio.paused) {
-    if (audio.currentTime > 6) {
-      audio.pause();
-      console.log("stopped");
-    }
-    return;
-  }
-
-  if (audio.paused) {
-    next_order();
-    var url = "../static/sounds/" + String(idx) + ".mp3";
-    console.log(url);
-
-    audio.setAttribute("src", url);
-    console.log("changed:" + audio.getAttribute("src"));
-    audio.load();
-    audio.play();
-  }
-}
-
-let idx = 0;
-function next_order() {
-  idx = idx + 1;
-  console.log("new idx:" + idx);
-  if (idx > 3) idx = 1;
-}

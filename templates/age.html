@@ -6,12 +6,75 @@
 </head>
 <body>
     {% block content %}
-    <h1>{% block title %} Comments {% endblock %}</h1>
+    <h1>{% block title %} 필터를 선택하세요 {% endblock %}</h1>
     <div style="width: 50%; margin: auto">
         <div style="padding: 10px; background-color: #EEE; margin: 20px">
             <p style="font-size: 24px">{{ age }}</p>
         </div>
     </div>
-    {% endblock %}
+
+    <div>
+        <img id="1" src="" onclick=sendData(this.id) width="200" height="200"/> &nbsp
+        <img id="2" src="" onclick=sendData(this.id) width="200" height="200"/><br/>
+        <img id="3" src="" onclick=sendData(this.id) width="200" height="200"/> &nbsp
+        <img id="4" src="" onclick=sendData(this.id) width="200" height="200"/><br/>
+    </div>
+
+    <script type="text/javascript">
+        let age = {{ age|tojson }};
+        let range = "";
+        console.log(age);
+        if(age<10){
+            range = "zero";
+        }else if(age<20){
+            range = "one";
+        }else if(age<30){
+            range = "two";
+        }else if(age<40){
+            range = "three";
+        }else if(age<50){
+            range = "four";
+        }else{
+            range = "five";
+        }
+
+        for(var i=1; i<=2; i++){
+            let img = document.getElementById(i);
+            let str = range + "/" + i + ".png";
+            img.src = "../static/filter/"+str;
+            //img.onclick = sendData(str);
+        }
+
+        function sendData(subject){  // 1,2,3,4
+            console.log(subject);
+            // send click event to server
+            let filters = {
+                "filter": range+"/"+subject+".png"
+            };
+
+            const init = {
+                method: "POST",
+                body: JSON.stringify(filters),
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                credentials : "same-origin"
+            }
+            fetch('/sendFilter', init)
+                .then(response => {
+                    // 첫번째 then
+                    if(response.status === 200){
+                      return response.json()
+                    } else {
+                      console.log(response.statusText);
+                    }
+                })
+                .then(jsonData => {
+                    alert(jsonData['msg']);
+                })
+            location.href="/audio";
+        }
+    </script>
+{% endblock %}
 </body>
 </html>
