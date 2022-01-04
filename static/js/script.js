@@ -8,12 +8,27 @@ let canvas = document.querySelector("#canvas");
 let title;
 let flag = true;
 
+
 window.onload = function(){
+//    document.onclick = function(){
+////        saveCanvas();
+//        sendData().then(() => showPopup());
+////        showPopup();
+//    }
+
     document.onclick = function(){
-        saveCanvas();
-        showPopup();
+        InOrderCall(sendData());
+    }
+};
 
+function InOrderCall(callback){
+    showPopup();
+    callback();
+}
 
+function sendData(){
+        console.log("front of the sendData()");
+// send click event to server
         let myData = {
             "click": "true"
         };
@@ -26,7 +41,7 @@ window.onload = function(){
             },
             credentials : "same-origin"
         }
-        fetch('/order', init)
+        fetch('/checkClicked', init)
             .then(response => {
                 // 첫번째 then
                 if(response.status === 200){
@@ -38,11 +53,13 @@ window.onload = function(){
             .then(jsonData => {
                 alert(jsonData['msg']);
             })
-    }
-};
+
+        console.log("end of the sendData()");
+}
 
 function showPopup() {
-    var newWindow = window.open("email.html"+"?title="+title, "photo", "width=400, height=300, left=100, top=50");
+//    console.log("front of the showPopup()");
+//    var newWindow = window.open("age.html", "Age", "width=400, height=300, left=100, top=50");
 }
 
 ////////////////////////////////////////////////////// WebCam
