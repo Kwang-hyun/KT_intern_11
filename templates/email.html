@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+        <script src="https://d3js.org/d3.v5.js"></script>
+        <meta charset="UTF-8">
+        <title>Title</title>
 </head>
 <body>
     <script type="text/javascript">
-
-        let path = "ChangeU+20220104-095630";
-        const urlParams = new URLSearchParams(window.location.search);
-        const myParam = urlParams.get('title');
+        console.log("javascript");
+        let path = "ChangeU+20220104-102212.png";
+        //const urlParams = new URLSearchParams(window.location.search);
+        //const myParam = urlParams.get('title');
 
         window.onload = function(){
             let image = document.getElementById("img");
-            image.src = "/Users/bbnsa/Downloads/" + myParams;
+            //image.src = "/Users/bbnsa/Downloads/" + myParams;
+            image.src = "file://c|/Users/bbnsa/Downloads/" + path;
         }
+
+        var str = {{ str|tojson }};
     </script>
 
+    <h2><script type="text/javascript">
+        document.write(str)
+      </script></h2>
     <img id="img" src="" width="90%"/>
 </body>
 </html>

@@ -1,9 +1,9 @@
 import cv2, torch
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request, jsonify
+import sys
 
 app = Flask(__name__)
-
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1)
 sticker = cv2.imread('./static/filter/ryan_transparent.png', cv2.IMREAD_UNCHANGED)
 
 model = torch.hub.load('ultralytics/yolov5', 'custom',
@@ -13,6 +13,7 @@ model = torch.hub.load('ultralytics/yolov5', 'custom',
 model.conf = 0.2
 model.iou = 0.45
 
+click = "false"
 
 def putSticker(img):
     results = model(img, size=416)
@@ -57,11 +58,32 @@ def captureFrames():
 def video():
     return Response(captureFrames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
+str = "테스트용"
+
+@app.route('/email.html')
+def tour1():
+    return render_template('email.html', str=str)
+
+@app.route('/order', methods=['POST'])
+def ordersave():
+    click = request.get_json()['click']
+    return 'Sucesss', 200
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
+

@@ -12,12 +12,37 @@ window.onload = function(){
     document.onclick = function(){
         saveCanvas();
         showPopup();
+
+
+        let myData = {
+            "click": "true"
+        };
+
+        const init = {
+            method: "POST",
+            body: JSON.stringify(myData),
+            headers: {
+              "Content-Type": "application/json"
+            },
+            credentials : "same-origin"
+        }
+        fetch('/order', init)
+            .then(response => {
+                // 첫번째 then
+                if(response.status === 200){
+                  return response.json()
+                } else {
+                  console.log(response.statusText);
+                }
+            })
+            .then(jsonData => {
+                alert(jsonData['msg']);
+            })
     }
 };
 
 function showPopup() {
-    var newWindow = window.open("./email.html"+"?title="+title, "photo", "width=400, height=300, left=100, top=50");
-//    location.href = "../../templates/email.html"+"?title="+title;
+    var newWindow = window.open("email.html"+"?title="+title, "photo", "width=400, height=300, left=100, top=50");
 }
 
 ////////////////////////////////////////////////////// WebCam
@@ -92,9 +117,10 @@ function saveCanvas(){
 
     // a 태그 생성 실시
     var a = document.createElement("a"); // a 태그 create
-
     // a 태그 href 속성에 캔버스 data url 지정
-    a.href = canvasID.toDataURL();
+        a.href = canvasID.toDataURL();
+
+    var dataURL = canvasID.toDataURL();
 
     // a 태그에 download 속성 지정 실시
     //var fileName = "chartImage.png";
@@ -130,35 +156,6 @@ function getTime() {
 
   return dateString + "-" + timeString;
 }
-
-//function canvasImageSave() {
-//  console.log("");
-//  console.log("[canvasImageSave] : [start]");
-//  console.log("");
-//
-//  // 캔버스 아이디 지정 실시
-//  var canvasID = document.getElementById("canvas");
-//
-//  // a 태그 생성 실시
-//  var a = document.createElement("a"); // a 태그 create
-//
-//  // a 태그 href 속성에 캔버스 data url 지정
-//  a.href = canvasID.toDataURL();
-//
-//  // a 태그에 download 속성 지정 실시
-//  //var fileName = "chartImage.png";
-//  var fileName = "ChangeU+" + getTime() + ".png";
-//  a.setAttribute("download", fileName); // a 태그에 다운로드 속성 추가
-//  // body 영역에 a 태그 추가 실시
-//  document.body.appendChild(a);
-//
-//  // a 태그 강제로 클릭 이벤트 발생 및 다운 로드 수행 실시
-//  a.click(); // 클릭 이벤트를 발생시켜 다운로드
-//
-//  // body 영역에서 a 태그 다시 삭제 실시
-//  document.body.removeChild(a);
-//}
-
 
 ////////////////////////////////////////////////////// prediction
 var children = [];
@@ -222,13 +219,6 @@ function predictWebcam() {
 
 
 ////////////////////////////////////////////////////// audio
-
-// function audio1() {
-//   var audio1 = new Audio("1번노래.mp3");
-//   audio1.loop = false; // 반복재생하지 않음
-//   audio1.volume = 0.2; // 음량 설정
-//   audio1.play();
-// }
 
 function aud_play() {
   var audio = document.getElementById("audio");
