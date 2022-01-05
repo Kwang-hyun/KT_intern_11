@@ -3,102 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
     <style>
         body {
-      font-family: helvetica, arial, sans-serif;
-      margin: 2em;
-      color: #3d3d3d;
-      background-color: #ffff66 !important;
-    }
+            font-family: helvetica, arial, sans-serif;
+            <!--      margin: 2em;-->
+            color: #3d3d3d;
+            background-color: #ffff66 !important;
+        }
 
-    .title {
-      text-align: center;
-      margin-top: 5%;
-    }
+        h5{
+            font-family: 'Jua', sans-serif;
+        }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      margin: 10%;
-    }
+        .title {
+          text-align: center;
+          margin-top: 3%;
+        }
 
-    .col {
-      text-align: center;
-    }
+        .container {
+          display: flex;
+          justify-content: center;
+          margin: 7%;
+          flex-direction: row;
+          align-items: center;
+        }
 
-    .card {
-      display: flex;
-      text-align: center;
-      margin: 10px;
-    }
+        .col {
+          text-align: center;
+        }
+
+        .card {
+          display: flex;
+          text-align: center;
+          margin: 10px;
+        }
 
     </style>
 </head>
 <body>
-    {% block content %}
+{% block content %}
+
     <div class="bg">
         <div class="title">
             <img src="../static/image/title_logo.png" style="width:500px; ">
         </div>
+
+        <div style="width: 50%; margin: auto">
+            <div style="padding: 10px; margin: 20px">
+                <p style="font-size: 24px; font-family: 'Jua', sans-serif; text-align: center;">예측된 나이는: {{ age }}</p>
+            </div>
+        </div>
+
         <div class="container">
             <div class="row row-cols-2">
                 <div class="card" style="width: 18rem;">
                     <img id="img1" src="" class="card-img-top" height="230" width="130">
                     <div class="card-body">
-                      <h5 class="card-title">필터1</h5>
-                      <a href="#" class="btn btn-warning" id="1" onclick=sendData(this.id)>선택</a>
+                        <h5 id="text1" class="card-title">필터1</h5>
+                        <a href="#" class="btn btn-warning" id="1" onclick=sendData(this.id)>선택</a>
                     </div>
                 </div>
                 <div class="card" style="width: 18rem;">
                     <img id="img2" src="" class="card-img-top" height="230" width="130">
                     <div class="card-body">
-                      <h5 class="card-title">필터2</h5>
-                      <a href="#" class="btn btn-warning" id="2" onclick=sendData(this.id)>선택</a>
+                        <h5 id="text2" class="card-title">필터2</h5>
+                        <a href="#" class="btn btn-warning" id="2" onclick=sendData(this.id)>선택</a>
                     </div>
                 </div>
                 <div class="card" style="width: 18rem;">
                     <img id="img3" src="" class="card-img-top" height="230" width="130">
                     <div class="card-body">
-                      <h5 class="card-title">필터3</h5>
-                      <a href="#" class="btn btn-warning" id="3" onclick=sendData(this.id)>선택</a>
+                        <h5 id="text3" class="card-title">필터3</h5>
+                        <a href="#" class="btn btn-warning" id="3" onclick=sendData(this.id)>선택</a>
                     </div>
                 </div>
                 <div class="card" style="width: 18rem;">
                     <img id="img4" src="" class="card-img-top" height="230" width="130">
                     <div class="card-body">
-                      <h5 class="card-title">필터4</h5>
-                      <a href="#" class="btn btn-warning" id="4"  onclick=sendData(this.id)>선택</a>
+                        <h5 id="text4" class="card-title">필터4</h5>
+                        <a href="#" class="btn btn-warning" id="4" onclick=sendData(this.id)>선택</a>
                     </div>
                 </div>
             </div>
-          </div>
+        </div>
     </div>
 
 
     <script type="text/javascript">
+
+        let datas = {
+            "zero_1": "뽀로로",
+            "zero_2": "루피",
+            "zero_3": "타요",
+            "zero_4": "짱아",
+            "one_1": "스우파 노제",
+            "one_2": "방탄소년단 진",
+            "one_3": "스파이더맨",
+            "one_4": "장원영",
+            "two_1": "텔레토비 뽀",
+            "two_2": "손흥민",
+            "two_3": "싸이월드",
+            "two_4": "오징어게임 오영남",
+            "three_1": "조인성",
+            "three_2": "손예진",
+            "three_3": "개구리 왕눈이",
+            "three_4": "개구리 아로미",
+            "four_1": "김수지",
+            "four_2": "이영애",
+            "four_3": "이소룡",
+            "four_4": "유오성",
+            "five_1": "비틀즈 폴매카트니",
+            "five_2": "마릴린먼로",
+            "five_3": "검정고무신 기영이",
+            "five_4": "이선희",
+        }
+
         let age = {{ age|tojson }};
         let range = "";
         console.log(age);
         if(age<10){
             range = "zero";
+            console.log("range:"+range);
         }else if(age<20){
             range = "one";
+            console.log("range:"+range);
         }else if(age<30){
             range = "two";
+            console.log("range:"+range);
         }else if(age<40){
             range = "three";
+            console.log("range:"+range);
         }else if(age<50){
             range = "four";
+            console.log("range:"+range);
         }else{
             range = "five";
+            console.log("range:"+range);
         }
 
         for(var i=1; i<=4; i++){
             let img = document.getElementById("img"+i);
             let str = range + "/" + i + ".png";
             img.src = "../static/filter/"+str;
-            //img.onclick = sendData(str);
+
+            let filterID = range+"_"+i;
+            let filterName = document.getElementById("text"+i);
+            filterName.innerHTML = datas[filterID];
+
+            console.log("img"+i+".src:"+img.src);
         }
 
         function sendData(subject){  // 1,2,3,4
@@ -131,6 +189,6 @@
             location.href="/audio";
         }
     </script>
-{% endblock %}
+    {% endblock %}
 </body>
 </html>

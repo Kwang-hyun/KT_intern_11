@@ -21,7 +21,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1)
 
 model = torch.hub.load('ultralytics/yolov5', 'custom',
                        path='C:/Users/bbnsa/Downloads/yolov5-20220103T002147Z-001/yolov5/runs/train/yolov5_coco8/weights/best.pt',
@@ -188,7 +188,7 @@ def applyphoto():
     saveImage()
     emailaddr = request.args.get('emailaddr')
 
-    msg = Message(subject="hello", body="hello", sender="jaejunkim12345@gmail.com", recipients=[emailaddr])
+    msg = Message(subject="11조 십시일반: ChangeU 사진도착", body="이용해주셔서 감사합니다", sender="jaejunkim12345@gmail.com", recipients=[emailaddr])
     print("sending FileName:"+fileName)
     with app.open_resource('./static/image/'+fileName) as fp:
         msg.attach(fileName, "image/png", fp.read())
@@ -205,6 +205,6 @@ def returnOrigin():
 
 
 if __name__ == "__main__":
-    app.run(host="172.30.1.2", port=5000, debug=True)
-    # app.run(debug=True)
+    # app.run(host="172.30.1.2", port=5000, debug=True)
+    app.run(debug=True)
 

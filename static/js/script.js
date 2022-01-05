@@ -1,5 +1,5 @@
 // 실행화면에서 프레임 이미지를 클릭했을 때 발생하는 함수.
-// 순차적으로 실행되지 않는 javascript 특성 때문에 callback 코드를 사용하여,\
+// 순차적으로 실행되지 않는 javascript 특성 때문에 callback 코드를 사용하여,
 // callback 인자로 들어온 sendData()함수부터 먼저 처리하고
 // showPopup() 함수를 처리한다.
 function InOrderCall(callback){
@@ -46,4 +46,3 @@ function showPopup() {
     console.log("front of the showPopup()");
     location.href = "age.html";
 }
-

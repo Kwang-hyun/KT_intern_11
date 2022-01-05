@@ -22,7 +22,6 @@
     </style>
   </head>
 
-
   <body>
     <div class="bg">
       <img id ="webcam" src="{{ url_for('video') }}" onclick="InOrderCall(sendData())"/>
@@ -33,14 +32,12 @@
           <audio autoplay="true">
             <source src="{{ url_for('static', filename = audio) }}" type="audio/mpeg">
           </audio>
-          <form action = /applyphoto method="get">
-            <input id="putEmail" style="margin-left: 40%; margin-top: 5pt;" placeholder="이메일주소 입력해주세요" width="50pt" name = 'emailaddr'> &nbsp
-
+          <form action = /applyphoto method="get" onsubmit="if(!confirm('이메일로 사진을 전송하시겠습니까?')){return false;}else{ alert('이메일을 전송하였습니다!! 시작화면으로 돌아갑니다.');}">
+            <input id="email" style="margin-left: 40%; margin-top: 10%;" placeholder="<enter>이메일주소 입력해주세요" size="50" name = 'emailaddr'> &nbsp
           </form>
-
-            <form action = /returnOrigin method="get">
-                <input type="image" src='../static/image/returnBtn3.png' style='margin-left:10pt' alt="Submit" width="70"/>
-            </form>
+          <form action = /returnOrigin method="get">
+            <input type="image" src='../static/image/returnBtn3.png' style='margin-left:10pt; position: absolute; top:10px;' alt="Submit" width="70"/>
+          </form>
       {% endif %}
       {% endblock %}
 
