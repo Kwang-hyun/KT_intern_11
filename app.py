@@ -4,11 +4,26 @@ import cv2, torch
 from flask import Flask, render_template, Response, request
 import requests
 import time
+from flask_mail import *
 
-filterResult = "five/1.png"
+
+filterResult = ""
 
 
 app = Flask(__name__)
+
+app.config["MAIL_SERVER"] = 'smtp.gmail.com'
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USERNAME"] = 'jaejunkim12345@gmail.com'
+app.config['MAIL_PASSWORD'] = 'vljcscobzfowqfpr'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
+
+
+
+
 camera = cv2.VideoCapture(1)
 
 model = torch.hub.load('ultralytics/yolov5', 'custom',
@@ -21,30 +36,9 @@ model.iou = 0.45
 click = "false"
 ifFilter = "false"
 age = 0
+currentFrame = None
+fileName = None
 
-def putSticker(img):
-    results = model(img, size=416)
-    # print(len(results.xyxy[0]))
-    if len(results.xyxy[0]) != 0:
-        for result in results.xyxy[0]:
-            top_left_x = int(result[0])
-            top_left_y = int(result[1])
-            bottom_right_x = int(result[2])
-            bottom_right_y = int(result[3])
-
-            # cv2.rectangle(image, pt1=(top_left_x, top_left_y), pt2=(bottom_right_x, bottom_right_y), color=(0, 255, 0),
-            #               thickness=2)
-
-            overlay_img = sticker.copy()
-            overlay_img = cv2.resize(overlay_img, dsize=(bottom_right_x - top_left_x, bottom_right_y - top_left_y))
-
-            overlay_alpha = overlay_img[:, :, 3:4] / 255.0
-            background_alpha = 1.0 - overlay_alpha
-
-            img[top_left_y:bottom_right_y, top_left_x:bottom_right_x] = overlay_alpha * overlay_img[:, :,
-                                                                                        :3] + background_alpha * img[
-                                                                                                                 top_left_y:bottom_right_y,
-                                                                                                                 top_left_x:bottom_right_x]
 
 
 def getAge(img):
@@ -76,10 +70,23 @@ def getAge(img):
     return average_age
 
 
+def saveImage():
+    global currentFrame
+    global fileName
+
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    filename = './static/image/' + timestamp + '.png'
+    fileName = timestamp + '.png'
+    cv2.imwrite(filename, currentFrame)
+    print("here: saveImage()")
+
+
+
 def captureFrames():
     global click
     global age
     global filterResult
+    global currentFrame
 
     while True:
         success, frame = camera.read()
@@ -97,7 +104,9 @@ def captureFrames():
             putMask(frame)
 
         ret, buffer = cv2.imencode('.jpg', frame)
+        currentFrame = frame
         frame = buffer.tobytes()
+
 
         yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
@@ -116,8 +125,8 @@ def putMask(img):
             bottom_right_x = int(result[2])
             bottom_right_y = int(result[3])
 
-            cv2.rectangle(img, pt1=(top_left_x, top_left_y), pt2=(bottom_right_x, bottom_right_y), color=(0, 255, 0),
-                          thickness=2)
+            # cv2.rectangle(img, pt1=(top_left_x, top_left_y), pt2=(bottom_right_x, bottom_right_y), color=(0, 255, 0),
+            #               thickness=2)
 
             overlay_img = sticker.copy()
             overlay_img = cv2.resize(overlay_img, dsize=(bottom_right_x - top_left_x, bottom_right_y - top_left_y))
@@ -143,22 +152,17 @@ def index():
 @app.route('/audio')
 def audio():
     global filterResult
-    audio = filterResult[:-4] + ".mp3"
-    print("audio:"+audio+".mp3")
+    audio = "/filter/" + filterResult[:-4] + ".mp3"
+    print("audio:"+audio)
     return render_template('index.html', audio=audio)
-
-@app.route('/email.html')
-def tour1():
-    return render_template('email.html', click=click)
 
 @app.route('/checkClicked', methods=['POST'])
 def checkClicked():
     global click
-
     print("checkClicked")
     click = request.get_json()['click']
     print(click)
-    return 'Sucesss', 200
+    return 'Success', 200
 
 @app.route('/sendFilter', methods=['POST'])
 def sendFilter():
@@ -182,6 +186,42 @@ def age():
     print("age function called:"+str(age))
     return render_template('age.html', age=age)
 
+@app.route("/applyphoto")
+def applyphoto():
+    global click
+    global fileName
+    global ifFilter
+
+    saveImage()
+    emailaddr = request.args.get('emailaddr')
+
+    msg = Message(subject="hello", body="hello", sender="jaejunkim12345@gmail.com", recipients=[emailaddr])
+    print("sending FileName:"+fileName)
+    with app.open_resource('./static/image/'+fileName) as fp:
+        msg.attach(fileName, "image/png", fp.read())
+        mail.send(msg)
+        # return "send"
+        # return render_template('index.html')
+        ifFilter = "false"
+    return render_template('index.html', audio="None")
+
+
+
+    # if emailaddr=='None' :
+    #     return render_template('index.html', audio="None")
+    # else:
+    #     msg = Message(subject="hello", body="hello", sender="jaejunkim12345@gmail.com", recipients=[emailaddr])
+    #     print("sending FileName:"+fileName)
+    #     with app.open_resource('./static/image/'+fileName) as fp:
+    #         msg.attach(fileName, "image/png", fp.read())
+    #         mail.send(msg)
+    #     # return "send"
+    #     # return render_template('index.html')
+    #     ifFilter = "false"
+    #
+    # return render_template('index.html', audio="None")
+
 if __name__ == "__main__":
+    # app.run(host="172.30.1.2", port=5000, debug=True)
     app.run(debug=True)
 

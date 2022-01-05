@@ -1,3 +1,5 @@
+//import gigagenie from "https://svcapi.gigagenie.ai/sdk/v1.0/js/gigagenie.js";
+
 const video = document.getElementById("webcam");
 const liveView = document.getElementById("liveView");
 const demosSection = document.getElementById("demos");
@@ -11,14 +13,9 @@ let flag = true;
 
 window.onload = function(){
 //    document.onclick = function(){
-////        saveCanvas();
-//        sendData().then(() => showPopup());
-////        showPopup();
+//        InOrderCall(sendData());
 //    }
-
-    document.onclick = function(){
-        InOrderCall(sendData());
-    }
+//    init();
 };
 
 function InOrderCall(callback){
@@ -58,12 +55,83 @@ function sendData(){
 }
 
 
-
 function showPopup() {
     console.log("front of the showPopup()");
 //    var newWindow = window.open("age.html", "Age", "width=400, height=300, left=100, top=50");
     location.href = "age.html";
 }
+
+function sendEmail(){
+    let emailAddress = prompt("이메일을 입력해주세요");
+    alert("메일을 보냈습니다!");
+}
+
+///////////////////////////////////////////////////// GIGA JENNI
+
+//var apistatus=0;
+//var options={};
+//var ws;
+//var status='NI';
+//var appid;
+//var containerid;
+//var wsstate=0;
+//var initstate=0;
+//var authcode;
+//
+//function init(){
+//	options={};
+//	options.apikey="RTUwMDQzOTF8R0JPWERFVk18MTY0MTI2MjA4NDExNA=="; // api key given from developer portal
+//	options.keytype="GBOXDEVM"; // 개발자모드를 설정하고 사용하세요.
+//        //options.keytype="GBOXCOMM"; // 개발자센터에서 승인이 되어야 사용하실 수 있습니다.
+//
+//	gigagenie.init(options,function(result_cd,result_msg,extra){
+//		if(result_cd===200){
+//			status='IS';
+//			console.log('Initialize Success');
+//			startNineNine();
+//		};
+//	});
+//
+//}
+//
+//gigagenie.voice.onRequestClose=function(){
+//	options={};
+//	gigagenie.voice.svcFinished(options,function(result_cd,result_msg,extra){
+//
+//	});
+//};
+//
+//function startNineNine(){
+//	var options={};
+//	var numbers=getNumber();
+//	options.voicemsg='안녕하세요 체인지유';
+//	var solution='사진 찍어줘';
+//
+//	gigagenie.voice.getVoiceText(options,function(result_cd,result_msg,extra){
+//		if(result_cd===200){
+//			console.log(extra.voicetext+':'+solution);
+//			if(extra.voicetext===solution){
+//				alert("네 알겠습니다.");
+//                InOrderCall(sendData());
+//			} else {
+//				alert("틀렸습니다.");
+//			}
+//		} else {
+//			alert("다시해보세요");
+//		}
+//		// startNineNine();
+//	});
+//};
+//
+
+
+
+
+
+
+
+
+
 
 ////////////////////////////////////////////////////// WebCam
 // Check if webcam access is supported.

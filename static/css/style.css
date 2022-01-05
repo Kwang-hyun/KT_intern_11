@@ -4,7 +4,7 @@ html, body{
 }
 
 body {
-    background-image: url("../img/background-img.jpg");
+    color: gray;
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
@@ -31,7 +31,6 @@ table {
   p{
     font-style: italic;
     color: #46FF33;
-
   }
   
   video {
