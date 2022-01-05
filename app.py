@@ -9,7 +9,6 @@ from flask_mail import *
 
 filterResult = ""
 
-
 app = Flask(__name__)
 
 app.config["MAIL_SERVER"] = 'smtp.gmail.com'
@@ -22,9 +21,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-
-
-camera = cv2.VideoCapture(1)
+camera = cv2.VideoCapture(0)
 
 model = torch.hub.load('ultralytics/yolov5', 'custom',
                        path='C:/Users/bbnsa/Downloads/yolov5-20220103T002147Z-001/yolov5/runs/train/yolov5_coco8/weights/best.pt',
@@ -52,7 +49,6 @@ def getAge(img):
     client_secret = "veZ4VX97Lb"
 
     url = "https://openapi.naver.com/v1/vision/face"
-    # url = "https://openapi.naver.com/v1/vision/celebrity"
     headers = {'X-Naver-Client-Id': client_id, 'X-Naver-Client-Secret': client_secret}
 
     files = {'image': open(filename, 'rb')}
@@ -116,7 +112,7 @@ def putMask(img):
     global filterResult
     sticker = cv2.imread('./static/filter/' + filterResult, cv2.IMREAD_UNCHANGED)
     results = model(img, size=416)
-    # print(len(results.xyxy[0]))
+
     if len(results.xyxy[0]) != 0:
         for result in results.xyxy[0]:
             top_left_x = int(result[0])
@@ -124,9 +120,6 @@ def putMask(img):
 
             bottom_right_x = int(result[2])
             bottom_right_y = int(result[3])
-
-            # cv2.rectangle(img, pt1=(top_left_x, top_left_y), pt2=(bottom_right_x, bottom_right_y), color=(0, 255, 0),
-            #               thickness=2)
 
             overlay_img = sticker.copy()
             overlay_img = cv2.resize(overlay_img, dsize=(bottom_right_x - top_left_x, bottom_right_y - top_left_y))
@@ -200,28 +193,18 @@ def applyphoto():
     with app.open_resource('./static/image/'+fileName) as fp:
         msg.attach(fileName, "image/png", fp.read())
         mail.send(msg)
-        # return "send"
-        # return render_template('index.html')
         ifFilter = "false"
     return render_template('index.html', audio="None")
 
 
+@app.route("/returnOrigin")
+def returnOrigin():
+    global ifFilter
+    ifFilter = "false"
+    return render_template('index.html', audio="None")
 
-    # if emailaddr=='None' :
-    #     return render_template('index.html', audio="None")
-    # else:
-    #     msg = Message(subject="hello", body="hello", sender="jaejunkim12345@gmail.com", recipients=[emailaddr])
-    #     print("sending FileName:"+fileName)
-    #     with app.open_resource('./static/image/'+fileName) as fp:
-    #         msg.attach(fileName, "image/png", fp.read())
-    #         mail.send(msg)
-    #     # return "send"
-    #     # return render_template('index.html')
-    #     ifFilter = "false"
-    #
-    # return render_template('index.html', audio="None")
 
 if __name__ == "__main__":
-    # app.run(host="172.30.1.2", port=5000, debug=True)
-    app.run(debug=True)
+    app.run(host="172.30.1.2", port=5000, debug=True)
+    # app.run(debug=True)
 
