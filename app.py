@@ -21,7 +21,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-camera = cv2.VideoCapture(1)
+camera = cv2.VideoCapture(0)
 
 model = torch.hub.load('ultralytics/yolov5', 'custom',
                        path='C:/Users/bbnsa/Downloads/yolov5-20220103T002147Z-001/yolov5/runs/train/yolov5_coco8/weights/best.pt',
